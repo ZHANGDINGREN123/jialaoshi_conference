@@ -8,8 +8,7 @@ from main_pre import get_test_data,get_train_data
 
 x_train_input, x_train_label = get_train_data()
 x_test_input, x_test_label = get_test_data()
-
-
+print x_train_input.shape, x_train_label.shape,x_test_input.shape, x_test_label.shape
 # 每个批次的大小
 # 计算一共有多少个批次
 n_batch = 10

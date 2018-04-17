@@ -30,6 +30,7 @@ def get_test_data(scale = 0.8):
     a1 = np.ones(53856)[np.newaxis]
     b1 = np.zeros(53856)[np.newaxis]
     c1 = np.vstack((a1, b1))
+    print c1.shape
     x_test_label1 = c1.T
     x_test_input2 = df_matrix_f32[95744:, 3:]
     a2 = np.ones(53856)[np.newaxis]
@@ -40,7 +41,7 @@ def get_test_data(scale = 0.8):
     x_test_label = np.vstack((x_test_label1, x_test_label2))
     # print x_test_input.shape, x_test_label.shape
     return x_test_input, x_test_label
-
+# get_test_data()
 def get_train_data_another(scale = 0.8):
     df = pd.read_csv("./3and4.csv", names=['one_node_longitude', 'one_node_latitude', 'kongbai', 'two_node_longitude',
                                         'two_node_latitude'])
