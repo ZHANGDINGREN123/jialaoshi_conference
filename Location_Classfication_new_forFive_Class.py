@@ -23,7 +23,7 @@ keep_prob=tf.placeholder(tf.float32)
 # 创建一个简单的神经网络
 W1 = tf.Variable(tf.truncated_normal([5, 100], stddev=0.1))
 b1 = tf.Variable(tf.zeros([100]) + 0.1)
-L1 = tf.nn.tanh(tf.matmul(x, W1) + b1)
+L1 = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 L1_drop = tf.nn.dropout(L1,keep_prob)
 
 W2 = tf.Variable(tf.truncated_normal([100, 40], stddev=0.1))
@@ -31,14 +31,19 @@ b2 = tf.Variable(tf.zeros([40]) + 0.1)
 L2 = tf.nn.sigmoid(tf.matmul(L1_drop, W2) + b2)
 L2_drop = tf.nn.dropout(L2,keep_prob)
 
-W3 = tf.Variable(tf.truncated_normal([40, 5], stddev=0.1))
-b3 = tf.Variable(tf.zeros([5]) + 0.1)
-prediction = tf.nn.softmax(tf.matmul(L2_drop,W3)+b3)
+W3 = tf.Variable(tf.truncated_normal([40, 20], stddev=0.1))
+b3 = tf.Variable(tf.zeros([20]) + 0.1)
+L3 = tf.nn.sigmoid(tf.matmul(L2_drop, W3) + b3)
+L3_drop = tf.nn.dropout(L3,keep_prob)
+
+W4 = tf.Variable(tf.truncated_normal([20, 5], stddev=0.1))
+b4 = tf.Variable(tf.zeros([5]) + 0.1)
+prediction = tf.nn.softmax(tf.matmul(L3_drop,W4)+b4)
 
 
 # 二次代价函数
-loss = tf.reduce_mean(tf.square(y-prediction))
-# loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=prediction))
+# loss = tf.reduce_mean(tf.square(y-prediction))
+loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=prediction))
 
 # 使用梯度下降法
 train_step = tf.train.AdamOptimizer(1e-2).minimize(loss)
