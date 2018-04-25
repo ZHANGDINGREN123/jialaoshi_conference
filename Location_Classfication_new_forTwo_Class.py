@@ -9,7 +9,7 @@ from main_pre_new_forTwo_Class import get_test_data,get_train_data,get_test_data
 x_test_input_only_one_classification, x_test_label_only_one_classification = get_test_data_only_one_classification()
 x_train_input_only_one_classification, x_train_label_only_one_classification = get_train_data_only_one_classification()
 x_test_input_only_two_classification, x_test_label_only_two_classification = get_test_data_only_two_classification()
-x_train_input_only_two_classification, x_train_label_only_two_classification = get_train_data_only_one_classification()
+x_train_input_only_two_classification, x_train_label_only_two_classification = get_train_data_only_two_classification()
 
 
 x_train_input, x_train_label = get_train_data()
@@ -63,43 +63,51 @@ with tf.Session() as sess:
         for batch in range(n_batch):
             sess.run(train_step, feed_dict={x: x_train_input, y: x_train_label, keep_prob:0.7})
 
-        test_acc_only_one_classfication = sess.run(accuracy, feed_dict={x: x_test_input_only_one_classification, y: x_test_label_only_one_classification, keep_prob: 1})
         test_acc = sess.run(accuracy,feed_dict={x:x_test_input,y:x_test_label, keep_prob:1})
         train_acc = sess.run(accuracy,feed_dict={x:x_train_input,y:x_train_label, keep_prob:1})
         # print("Iter " + str(epoch) + ",Testing Accuracy " + str(test_acc) + ",Training Accuracy " + str(train_acc))
 
-        TN_test = test_acc_only_one_classfication * 111450
-        FP_test = (1 - test_acc_only_one_classfication) * 111450
-        # print("test_acc_only_one_classfication Accuracy " + str(TN))
-
-
-        test_acc_only_two_classfication = sess.run(accuracy, feed_dict={x: x_test_input_only_two_classification,
-                                                                        y: x_test_label_only_two_classification,
-                                                                        keep_prob: 1})
-        TP_test = test_acc_only_two_classfication * 111450
-        FN_test = (1- test_acc_only_two_classfication) * 111450
-        # print("test_acc_only_two_classfication Accuracy " + str(test_acc_only_two_classfication * 111450))
-        print ("################Testing#################")
-        print("Iter " + str(epoch) + ",Testing Accuracy " + str(test_acc) + ",Precision " + str(TP_test/(TP_test + FP_test)) + ",Recall " + str(TP_test/(TP_test + FN_test)) + ",False_Alarm " + str(FP_test/(FP_test + TN_test)) + ",Missed_detection " + str(FN_test/(TP_test + FN_test)))
-
-
         train_acc_only_one_classfication = sess.run(accuracy, feed_dict={x: x_train_input_only_one_classification,
                                                                         y: x_train_label_only_one_classification,
                                                                         keep_prob: 1})
-        TN_train = train_acc_only_one_classfication * 111450
-        FP_train = (1 - train_acc_only_one_classfication) * 111450
+        TN_train = train_acc_only_one_classfication * 74300
+        FP_train = (1 - train_acc_only_one_classfication) * 74300
         # print("train_acc_only_one_classfication Accuracy " + str(train_acc_only_one_classfication * 111450))
 
         train_acc_only_two_classfication = sess.run(accuracy, feed_dict={x: x_train_input_only_two_classification,
                                                                         y: x_train_label_only_two_classification,
                                                                         keep_prob: 1})
-        TP_train = train_acc_only_two_classfication * 111450
-        FN_train = (1- train_acc_only_two_classfication) * 111450
+        TP_train = train_acc_only_two_classfication * 74300
+        FN_train = (1 - train_acc_only_two_classfication) * 74300
         # print("train_acc_only_two_classfication Accuracy " + str(test_acc_only_two_classfication * 111450))
         print ("################Training#################")
         print("Iter " + str(epoch) + ",Training Accuracy " + str(train_acc) + ",Precision " + str(
             TP_train / (TP_train + FP_train)) + ",Recall " + str(TP_train / (TP_train + FN_train)) + ",False_Alarm " + str(
-            FP_train / (FP_train + TN_train)) + ",Missed_detection " + str(FN_train / (TP_train + FN_train)))
+            FP_train / (FP_train + TN_train)) + ",Missed_detection " + str(FN_train / (TP_train + FN_train)) + ",F-score " + str(2 * TP_train / (TP_train + FP_train) * TP_train / (TP_train + FN_train) / (TP_train / (TP_train + FP_train) + TP_train / (TP_train + FN_train))))
+
+        test_acc_only_one_classfication = sess.run(accuracy, feed_dict={x: x_test_input_only_one_classification,
+                                                                        y: x_test_label_only_one_classification,
+                                                                        keep_prob: 1})
+        TN_test = test_acc_only_one_classfication * 74300
+        FP_test = (1 - test_acc_only_one_classfication) * 74300
+        # print("test_acc_only_one_classfication Accuracy " + str(TN))
+
+        test_acc_only_two_classfication = sess.run(accuracy, feed_dict={x: x_test_input_only_two_classification,
+                                                                        y: x_test_label_only_two_classification,
+                                                                        keep_prob: 1})
+        TP_test = test_acc_only_two_classfication * 74300
+        FN_test = (1 - test_acc_only_two_classfication) * 74300
+        # print("test_acc_only_two_classfication Accuracy " + str(test_acc_only_two_classfication * 111450))
+        print ("################Testing#################")
+        print("Iter " + str(epoch) + ",Testing Accuracy " + str(test_acc) + ",Precision " + str(TP_test/(TP_test + FP_test)) + ",Recall " + str(TP_test/(TP_test + FN_test)) + ",False_Alarm " + str(FP_test/(FP_test + TN_test)) + ",Missed_detection " + str(FN_test/(TP_test + FN_test)) + ",F-score " + str(2*TP_test/(TP_test + FP_test)*TP_test/(TP_test + FN_test)/(TP_test/(TP_test + FP_test)+TP_test/(TP_test + FN_test))))
+        print ("#################################")
+
+        print("Iter " + str(epoch) + ",TP_train " + str(TP_train) + ",FN_train " + str(FN_train) + ",TN_train " + str(
+            TN_train) + ",FP_train " + str(FP_train) + ",TP_train+FN_train " + str(TP_train+FN_train) + ",FP_train+TN_train " + str(FP_train+TN_train))
+
+        print("Iter " + str(epoch) + ",TP_test " + str(TP_test) + ",FN_test " + str(FN_test) + ",TN_test " + str(
+            TN_test) + ",FP_test " + str(FP_test))
+
         print ("/n")
 
 
